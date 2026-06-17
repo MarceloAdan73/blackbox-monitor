@@ -153,7 +153,8 @@ blackbox-monitor/
 ├── config.yaml             # Configuracion de sitios (ignorado por git)
 ├── config.example.yaml     # Ejemplo de configuracion
 ├── screenshots/            # Capturas y GIF demo
-│   └── demo.gif
+│   ├── demo.gif
+│   └── dashboard.png
 ├── bin/                    # Ejecutable compilado
 ├── internal/
 │   ├── monitor/
@@ -201,6 +202,8 @@ Puedes recibir notificaciones en tu telefono cuando un sitio cambie de estado (O
 **Nota:** Si `enabled: false` o las credenciales estan vacias, el monitor funciona sin alertas. Las notificaciones se envian en segundo plano sin ralentizar el monitoreo.
 
 ## Dashboard Web
+
+![Dashboard](screenshots/dashboard.png)
 
 El dashboard web es una interfaz moderna en modo oscuro con CSS Grid:
 
