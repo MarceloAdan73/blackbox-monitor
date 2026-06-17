@@ -8,6 +8,8 @@
 
 > Monitoreo de salud web con dashboard visual, almacenamiento y gráficas en tiempo real.
 
+![Demo](screenshots/demo.gif)
+
 ## Descripcion
 
 **BlackBox Monitor** es un sistema de monitoreo de sitios web con interfaz en terminal y dashboard web. Verifica el estado HTTP de tus URLs, mide latencia, y te muestra resultados en tiempo real via terminal con estilos Lip Gloss o via navegador con gráficas ApexCharts.
