@@ -1,0 +1,8 @@
+bin/
+dist/
+*.exe
+*.log
+*.db
+.idea/
+.vscode/
+config.yaml

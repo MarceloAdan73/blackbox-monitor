@@ -1,0 +1,36 @@
+interval: 60
+
+# ===== ALERTAS POR TELEGRAM (OPCIONAL) =====
+# Para activar, crea un bot con @BotFather en Telegram
+# y completa los campos abajo con tu token y chat_id.
+# Mas info en README.md
+telegram:
+  enabled: false
+  bot_token: "YOUR_BOT_TOKEN_HERE"
+  chat_id: "YOUR_CHAT_ID_HERE"
+
+sites:
+  - name: "Mi Portfolio"
+    url: "https://marcelo-palma-portfolio.vercel.app"
+    timeout: 5000
+  - name: "Angular Music Player"
+    url: "https://music-player-roan-eight.vercel.app"
+    timeout: 5000
+  - name: "CodeMp AI"
+    url: "https://code-mp-ai.vercel.app"
+    timeout: 5000
+  - name: "DevNotes"
+    url: "https://dev-notes-ruby.vercel.app"
+    timeout: 5000
+  - name: "Markdown Converter"
+    url: "https://markdown-converter-six.vercel.app"
+    timeout: 5000
+  - name: "Task Manager Pro"
+    url: "https://taskmanager-pro-pi.vercel.app"
+    timeout: 5000
+  - name: "Web Vault"
+    url: "https://web-vault-tawny.vercel.app"
+    timeout: 5000
+  - name: "Study Apps"
+    url: "https://matematicas-t.vercel.app"
+    timeout: 5000
