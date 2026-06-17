@@ -124,18 +124,20 @@ sites:
 | `-interval` | valor del config | Intervalo en segundos entre chequeos |
 | `-port` | `:8080` | Puerto del dashboard web (vacio = desactivado) |
 
-### Sitios monitoreados actualmente
+### Sitios de ejemplo
 
-| Sitio | URL | Plataforma |
-|---|---|---|
-| Mi Portfolio | marcelo-palma-portfolio.vercel.app | Vercel |
-| Angular Music Player | music-player-roan-eight.vercel.app | Vercel |
-| CodeMp AI | code-mp-ai.vercel.app | Vercel |
-| DevNotes | dev-notes-ruby.vercel.app | Vercel |
-| Markdown Converter | markdown-converter-six.vercel.app | Vercel |
-| Task Manager Pro | taskmanager-pro-pi.vercel.app | Vercel |
-| Web Vault | web-vault-tawny.vercel.app | Vercel |
-| Study Apps | matematicas-t.vercel.app | Vercel |
+```yaml
+sites:
+  - name: "Example Site"
+    url: "https://example.com"
+    timeout: 5000
+  - name: "Wikipedia"
+    url: "https://www.wikipedia.org"
+    timeout: 5000
+  - name: "GitHub"
+    url: "https://github.com"
+    timeout: 5000
+```
 
 ## Estructura del proyecto
 
@@ -278,7 +280,7 @@ go test ./... -cover
 - [x] Endpoint /api/status (JSON)
 - [x] Embebed de archivos estaticos con embed
 - [x] SQLite storage con build tag
-- [x] 8 sitios Vercel configurados y monitoreados
+- [x] Sitios configurables via YAML (ejemplos públicos incluidos)
 - [x] Alertas por Telegram (configurables via YAML, goroutine no bloqueante)
 - [x] Notificación de inicio por Telegram
 - [x] Tests unitarios (checker, server, notifier)

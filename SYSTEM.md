@@ -217,18 +217,16 @@ Colores:
 - [x] **Dashboard oscuro moderno** (sin Bootstrap, CSS Grid, paleta consistente con terminal)
 - [x] **Tests unitarios** (checker, server, notifier con httptest)
 
-### 4.2. Sitios monitoreados
+### 4.2. Sitios de ejemplo (config.example.yaml)
 
-| # | Nombre | URL | Plataforma |
-|---|---|---|---|
-| 1 | Mi Portfolio | marcelo-palma-portfolio.vercel.app | Vercel |
-| 2 | Angular Music Player | music-player-roan-eight.vercel.app | Vercel |
-| 3 | CodeMp AI | code-mp-ai.vercel.app | Vercel |
-| 4 | DevNotes | dev-notes-ruby.vercel.app | Vercel |
-| 5 | Markdown Converter | markdown-converter-six.vercel.app | Vercel |
-| 6 | Task Manager Pro | taskmanager-pro-pi.vercel.app | Vercel |
-| 7 | Web Vault | web-vault-tawny.vercel.app | Vercel |
-| 8 | Study Apps | matematicas-t.vercel.app | Vercel |
+| # | Nombre | URL |
+|---|---|---|
+| 1 | Example Site | example.com |
+| 2 | HTTPBin | httpbin.org/get |
+| 3 | Wikipedia | wikipedia.org |
+| 4 | GitHub | github.com |
+
+> Los sitios reales se configuran en `config.yaml`. `config.example.yaml` contiene URLs públicas de demostración.
 
 ### 4.3. Pendientes (Proximas features — v1.4+)
 
@@ -276,11 +274,17 @@ telegram:
   chat_id: "YOUR_CHAT_ID_HERE"
 
 sites:
-  - name: "Mi Portfolio"
-    url: "https://marcelo-palma-portfolio.vercel.app"
+  - name: "Example Site"
+    url: "https://example.com"
     timeout: 5000
-  - name: "Angular Music Player"
-    url: "https://music-player-roan-eight.vercel.app"
+  - name: "HTTPBin"
+    url: "https://httpbin.org/get"
+    timeout: 5000
+  - name: "GitHub"
+    url: "https://github.com"
+    timeout: 5000
+  - name: "Wikipedia"
+    url: "https://www.wikipedia.org"
     timeout: 5000
 ```
 

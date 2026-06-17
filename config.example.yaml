@@ -10,27 +10,15 @@ telegram:
   chat_id: "YOUR_CHAT_ID_HERE"
 
 sites:
-  - name: "Mi Portfolio"
-    url: "https://marcelo-palma-portfolio.vercel.app"
+  - name: "Example Site"
+    url: "https://example.com"
     timeout: 5000
-  - name: "Angular Music Player"
-    url: "https://music-player-roan-eight.vercel.app"
+  - name: "HTTPBin"
+    url: "https://httpbin.org/get"
     timeout: 5000
-  - name: "CodeMp AI"
-    url: "https://code-mp-ai.vercel.app"
+  - name: "Wikipedia"
+    url: "https://www.wikipedia.org"
     timeout: 5000
-  - name: "DevNotes"
-    url: "https://dev-notes-ruby.vercel.app"
-    timeout: 5000
-  - name: "Markdown Converter"
-    url: "https://markdown-converter-six.vercel.app"
-    timeout: 5000
-  - name: "Task Manager Pro"
-    url: "https://taskmanager-pro-pi.vercel.app"
-    timeout: 5000
-  - name: "Web Vault"
-    url: "https://web-vault-tawny.vercel.app"
-    timeout: 5000
-  - name: "Study Apps"
-    url: "https://matematicas-t.vercel.app"
+  - name: "GitHub"
+    url: "https://github.com"
     timeout: 5000
