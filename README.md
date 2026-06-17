@@ -27,7 +27,7 @@ Ideal para desarrolladores que quieren monitorear sus deployes (Vercel, Render, 
 | Multiples URLs (8 sitios configurados) | Hecho |
 | Monitoreo continuo con intervalo configurable | Hecho |
 | Graceful shutdown (Ctrl+C limpio) | Hecho |
-| Dashboard web (Bootstrap + ApexCharts) | Hecho |
+| Dashboard web (CSS Grid + ApexCharts) | Hecho |
 | Endpoint API /api/status (JSON) | Hecho |
 | Flag -config, -interval, -port | Hecho |
 | Logs en SQLite (build tag opcional) | Hecho |
@@ -142,29 +142,30 @@ sites:
 ```
 blackbox-monitor/
 ├── main.go                 # Entry point, flags, loop, señales
-├── server.go               # Servidor HTTP + endpoint /api/status
+├── server.go               # Servidor HTTP + endpoints (/api/status, /health, /api/export)
 ├── state.go                # Estado compartido thread-safe
 ├── storage_entry.go        # Interfaz Store + tipos
 ├── storage_sqlite.go       # Implementacion SQLite (build tag: sqlite)
 ├── storage_nosqlite.go     # Implementacion sin-op (build tag: !sqlite)
 ├── go.mod / go.sum         # Dependencias
-├── config.yaml             # Configuracion de sitios
+├── config.yaml             # Configuracion de sitios (ignorado por git)
+├── config.example.yaml     # Ejemplo de configuracion
+├── screenshots/            # Capturas y GIF demo
+│   └── demo.gif
 ├── bin/                    # Ejecutable compilado
 ├── internal/
 │   ├── monitor/
-│   │   └── checker.go      # Logica HTTP check
+│   │   └── checker.go      # CheckSite() + extraccion SSL
 │   ├── notifier/
-│   │   └── telegram.go     # Alertas por Telegram
+│   │   └── telegram.go     # Alertas Telegram (cambio estado + startup)
 │   ├── storage/
 │   │   └── sqlite.go       # SQLite storage (build tag: sqlite)
 │   └── ui/
 │       └── styles.go       # Estilos Lip Gloss (terminal)
 └── web/
     └── static/
-        ├── index.html      # Dashboard web (Bootstrap + ApexCharts)
-        ├── assets/          # CSS, JS, imagenes del template
-        ├── images/          # Iconos y logos
-        └── plugins/         # Themify icons, scrollbar
+        ├── index.html      # Dashboard oscuro (CSS Grid + ApexCharts)
+        └── plugins/        # Themify icons
 ```
 
 ## Alertas por Telegram
@@ -273,7 +274,7 @@ go test ./... -cover
 - [x] Loop de monitoreo continuo con time.Ticker
 - [x] Graceful shutdown con SIGINT/SIGTERM
 - [x] Flags -config, -interval, -port
-- [x] Dashboard web con Bootstrap + ApexCharts
+- [x] Dashboard web oscuro con CSS Grid + ApexCharts
 - [x] Endpoint /api/status (JSON)
 - [x] Embebed de archivos estaticos con embed
 - [x] SQLite storage con build tag

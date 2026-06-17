@@ -22,7 +22,7 @@
 |---|---|---|
 | Lenguaje | Go 1.22 | Binario unico, stdlib completa |
 | UI Terminal | `charmbracelet/lipgloss v1.1.0` | Estilos modernos en terminal |
-| Dashboard Web | Bootstrap 3 + ApexCharts | Panel visual en navegador |
+| Dashboard Web | CSS Grid + ApexCharts | Panel visual en navegador |
 | Configuracion | `gopkg.in/yaml.v3` | Config YAML flexible |
 | Almacenamiento | `mattn/go-sqlite3` (build tag) | Historial de checks |
 | Embed | `embed` (stdlib) | Embeber HTML/CSS/JS en binario |
@@ -37,30 +37,31 @@
 ```
 blackbox-monitor/
 ├── main.go                 # Entry point, flags, loop, señales
-├── server.go               # Servidor HTTP + endpoint /api/status (embed)
+├── server.go               # Servidor HTTP + endpoints (/api/status, /health, /api/export)
 ├── state.go                # Estado compartido thread-safe (DashboardState)
 ├── storage_entry.go        # Interfaz Store + tipo LogEntry
 ├── storage_sqlite.go       # Implementacion SQLite (build tag: sqlite)
 ├── storage_nosqlite.go     # Implementacion no-op (build tag: !sqlite)
 ├── go.mod / go.sum         # Dependencias
-├── config.yaml             # Configuracion de sitios (interval + sites) — ignorado por git
+├── config.yaml             # Configuracion de sitios — ignorado por git
 ├── config.example.yaml     # Ejemplo de configuracion para compartir en GitHub
+├── screenshots/            # Capturas y GIF demo
+│   └── demo.gif
 ├── bin/                    # Ejecutable compilado
 ├── internal/
 │   ├── monitor/
-│   │   └── checker.go      # CheckSite() - verificacion HTTP GET
+│   │   ├── checker.go      # CheckSite() - verificacion HTTP GET + extraccion SSL
+│   │   └── checker_test.go # Tests con httptest
 │   ├── notifier/
-│   │   └── telegram.go     # SendStateChangeAlert() - notificaciones Telegram
+│   │   ├── telegram.go     # SendStateChangeAlert() + SendStartupNotification()
+│   │   └── telegram_test.go
 │   ├── storage/
 │   │   └── sqlite.go       # Store SQLite con migracion auto
 │   └── ui/
 │       └── styles.go       # RenderTitle, RenderSiteBox, RenderSummaryBox, etc.
 └── web/
     └── static/
-        ├── index.html      # Dashboard web (Bootstrap + ApexCharts + AJAX)
-        ├── assets/css/     # style.css del template
-        ├── assets/js/      # custom.js del template
-        ├── images/         # Iconos y logos
+        ├── index.html      # Dashboard oscuro (CSS Grid + ApexCharts + AJAX)
         └── plugins/        # Themify icons
 ```
 
@@ -83,10 +84,15 @@ openStore("blackbox.db") → Store (SQLite o no-op)
 state = NewDashboardState()
    │
    ▼
-if -port != "" → go startServer(port, state)
+if Telegram habilitado → go notifier.SendStartupNotification() (goroutine no bloqueante)
+   │
+   ▼
+if -port != "" → go startServer(port, state, store)
    │                    ├── GET / → index.html (embed)
    │                    ├── GET /static/* → archivos estaticos
-   │                    └── GET /api/status → JSON del estado
+   │                    ├── GET /api/status → JSON del estado
+   │                    ├── GET /health → JSON healthcheck (uptime, version, sitios)
+   │                    └── GET /api/export → CSV descargable
    │
    ▼
 Ticker = time.NewTicker(interval * second)
@@ -114,18 +120,20 @@ Loop:
 
 ### 3.3. Paquete `internal/monitor` (checker.go)
 
-- **Struct `SiteResult`**: Name, URL, Online (bool), HTTPCode, LatencyMs, Error, CheckedAt
+- **Struct `SiteResult`**: Name, URL, Online (bool), HTTPCode, LatencyMs, Error, CheckedAt, CertExpiry, CertExpiryDays
 - **`CheckSite(name, url string, timeoutMs int) SiteResult`**:
-  - HTTP GET con timeout configurable
+  - HTTP GET con timeout configurable y `InsecureSkipVerify: true` para captura TLS
   - Status 200-399 = Online
   - Status >= 400 o error de red = Offline
   - Mide latencia con `time.Since()`
+  - Extrae certificado TLS (NotAfter + días restantes) de `resp.TLS.PeerCertificates[0]`
+- **`extractHost(rawURL string) string`**: Helper para extraer host sin importar `net/url`
 
 ### 3.4. Paquete `internal/ui` (styles.go)
 
 Funciones de renderizado:
 - `RenderTitle()` → Header con borde doble, titulo + subtitle
-- `RenderSiteBox(name, url, online, code, latency, time, err)` → Caja por sitio con borde coloreado
+- `RenderSiteBox(name, url, online, code, latency, time, err, certExpiryDays)` → Caja por sitio con borde coloreado + alerta SSL si < 30 días
 - `RenderSummaryBox(online, total, avg, ok, fail)` → Dashboard con barra de progreso y metricas
 - `RenderFooter(nextCheck, interval)` → Proximo chequeo + countdown
 - `RenderShutdown()` → Mensaje de despedida
@@ -222,15 +230,13 @@ Colores:
 | 7 | Web Vault | web-vault-tawny.vercel.app | Vercel |
 | 8 | Study Apps | matematicas-t.vercel.app | Vercel |
 
-### 4.3. Pendientes (Proximas features — v1.3+)
+### 4.3. Pendientes (Proximas features — v1.4+)
 
 | # | Feature | Descripcion | Ubicacion sugerida | Prioridad |
 |---|---|---|---|---|
-| 1 | Pruebas unitarias | Tests con `httptest` para checker, storage y server. Coverage minimo 70%. | `*_test.go` en cada paquete | Alta |
-| 2 | Exportar historial a CSV | Endpoint `GET /api/export` o flag `-export` para generar CSV con historial completo de checks. | `server.go` + `storage_entry.go` | Media |
-| 3 | SSL cert expiry check | Verificar expiracion del certificado TLS de cada sitio. Alertar si quedan < 30 dias. | `internal/monitor/checker.go` | Media |
-| 4 | Intervalo configurable desde dashboard | Boton/slider en el dashboard web para cambiar intervalo en tiempo real sin reiniciar. | `web/static/index.html` + `server.go` | Baja |
-| 5 | Healthcheck del monitor | Endpoint `GET /health` que devuelve OK si el monitor esta vivo y corriendo. | `server.go` | Baja |
+| 1 | Intervalo configurable desde dashboard | Boton/slider en el dashboard web para cambiar intervalo en tiempo real sin reiniciar. | `web/static/index.html` + `server.go` | Baja |
+| 2 | Uptime history chart | Gráfico historico de uptime por sitio usando datos de SQLite. | `web/static/index.html` + `server.go` | Media |
+| 3 | Multiples canales de notificacion | Webhooks, email (SMTP), Slack ademas de Telegram. | `internal/notifier/` | Baja |
 
 ### 4.4. Comandos de verificacion
 
@@ -330,7 +336,8 @@ sites:
 - Paleta de dashboard unificada con los colores de la terminal (Lip Gloss)
 - Notificación de inicio por Telegram (SendStartupNotification)
 - Startup alert enviada en goroutine al arrancar con Telegram habilitado
-- Tests existentes actualizados y pasando (go test -race)
+- GIF animado demo agregado a `screenshots/demo.gif`
+- Archivos del template anterior eliminados (assets/, images/, mCustomScrollbar, Bootstrap)
 - README.md y SYSTEM.md actualizados
 
 ### v1.2 (Junio 2026) — Alertas Telegram
