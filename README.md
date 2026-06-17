@@ -3,8 +3,8 @@
 ![Status](https://img.shields.io/badge/status-v1.3%20Ready-purple?style=for-the-badge)
 ![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=for-the-badge&logo=go)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
-[![Go Report Card](https://goreportcard.com/badge/github.com/marcelo-adan/blackbox-monitor)](https://goreportcard.com/report/github.com/marcelo-adan/blackbox-monitor)
-[![CI](https://github.com/marcelo-adan/blackbox-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/marcelo-adan/blackbox-monitor/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/MarceloAdan73/blackbox-monitor)](https://goreportcard.com/report/github.com/MarceloAdan73/blackbox-monitor)
+[![CI](https://github.com/MarceloAdan73/blackbox-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/MarceloAdan73/blackbox-monitor/actions/workflows/ci.yml)
 
 > Monitoreo de salud web con dashboard visual, almacenamiento y gráficas en tiempo real.
 
