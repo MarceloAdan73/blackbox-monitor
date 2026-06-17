@@ -6,8 +6,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/MarceloAdan73/blackbox-monitor)](https://goreportcard.com/report/github.com/MarceloAdan73/blackbox-monitor)
 [![CI](https://github.com/MarceloAdan73/blackbox-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/MarceloAdan73/blackbox-monitor/actions/workflows/ci.yml)
 ![Go Version](https://img.shields.io/github/go-mod/go-version/MarceloAdan73/blackbox-monitor?style=for-the-badge)
-![Release](https://img.shields.io/github/v/release/MarceloAdan73/blackbox-monitor?style=for-the-badge)
-![Last Commit](https://img.shields.io/github/last-commit/MarceloAdan73/blackbox-monitor?style=for-the-badge)
 
 > Web health monitoring with terminal UI and web dashboard.
 
